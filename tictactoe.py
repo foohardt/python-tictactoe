@@ -9,13 +9,19 @@ def print_game_board(values):
     print(' ' + values[7] + ' | ' + values[8] + ' | ' + values[9])
     print('\n')
 
-def handle_position_input():
+def handle_position_input(current_symbol):
     position = 0
-    while position not in range(1, 10):
-        position = int(input("Select position: "))
+    while position not in range(1, 10) or not occupied(position):
+        position = int(input(current_symbol + ' select position: '))
         print('Please enter number between 1 and 9')
 
     return position
+
+def occupied(position):
+    if game_board[position] in ('X', 'O'):
+        print('Position already occupied.')
+        return False
+    return True
 
 def set_position(current_symbol, position):
     if game_board[position] in ('X', 'O'):
@@ -51,7 +57,7 @@ def game():
             else:
                 current_symbol = player_two
 
-            position = handle_position_input()
+            position = handle_position_input(current_symbol)
             set_position(current_symbol, position)
             print_game_board(game_board)
             if current_player_is_winner(current_symbol):
