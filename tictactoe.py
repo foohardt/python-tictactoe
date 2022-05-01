@@ -22,6 +22,21 @@ def set_position(current_symbol, position):
         print('position already occupied')
     game_board[position] = current_symbol
 
+def current_player_is_winner(current_symbol):
+    return ((game_board[1] == current_symbol and game_board[2] == current_symbol and game_board[3] == current_symbol) or  # top row
+            (game_board[4] == current_symbol and game_board[5] == current_symbol and game_board[6] == current_symbol) or  # middle row
+            (game_board[7] == current_symbol and game_board[8] == current_symbol and game_board[9] == current_symbol) or  # bottom row
+            (game_board[1] == current_symbol and game_board[4] == current_symbol and game_board[7] == current_symbol) or  # first column
+            (game_board[2] == current_symbol and game_board[5] == current_symbol and game_board[8] == current_symbol) or  # second column
+            (game_board[3] == current_symbol and game_board[6] == current_symbol and game_board[9] == current_symbol) or  # third column
+            (game_board[1] == current_symbol and game_board[5] == current_symbol and game_board[9] == current_symbol) or  # diagonal
+            (game_board[3] == current_symbol and game_board[5] == current_symbol and game_board[7] == current_symbol))  # diagonal
+    
+def game_board_is_full():
+    for i in range(1, 10):
+        if game_board[i] not in ('X', 'O'):
+            return False
+    return True
 
 def game():
     while True:
@@ -39,5 +54,14 @@ def game():
             position = handle_position_input()
             set_position(current_symbol, position)
             print_game_board(game_board)
+            if current_player_is_winner(current_symbol):
+                print('Congratulations!' + ' ' + current_symbol + ' ' + 'has won.')
+                break
+            if game_board_is_full():
+                print('Board is full. Please restart game.')
+                break
+            else:
+                current_turn = 'player_two' if current_turn is 'player_one' else 'player_one'
+        break
 
 game()
